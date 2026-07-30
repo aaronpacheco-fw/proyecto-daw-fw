@@ -46,7 +46,7 @@ public class CarritoController {
 
     @GetMapping("/usuario/{idUsuario}")
     public List<Carrito> historial(@PathVariable Long idUsuario){
-        return carritoRepository.findByUsuarioId(idUsuario);
+        return carritoRepository.findByUsuarioIdUsuario(idUsuario);
     }
 
     @GetMapping("/{idCarrito}")
