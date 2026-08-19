@@ -3,6 +3,7 @@ package pe.cibertec.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.cibertec.entities.Producto;
 import pe.cibertec.repository.ProductoRepository;
 
@@ -20,6 +21,7 @@ public class ProductoService {
     }
 
 
+    @Transactional
     public void registrarLote(List<Producto> productos){
         int i = 0;
         for(Producto p: productos){
