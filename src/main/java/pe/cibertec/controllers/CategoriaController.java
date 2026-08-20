@@ -1,83 +1,100 @@
 package pe.cibertec.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.cibertec.entities.Categoria;
 import pe.cibertec.repository.CategoriaRepository;
+import pe.cibertec.service.CategoriaService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/categorias")
 public class CategoriaController {
-    private final CategoriaRepository categoriaRepo;
 
-    public CategoriaController(CategoriaRepository categoriaRepo) {
-        this.categoriaRepo = categoriaRepo;
-    }
+    private final CategoriaService categoriaService;
 
-
-    @PostMapping
-    public ResponseEntity<?> crear(@RequestBody Categoria categoria) {
-        try {
-            if (categoria.getNombre() == null || categoria.getNombre().trim().isEmpty()) {
-                return ResponseEntity.badRequest().body("El nombre de la categoría es requerido");
-            }
-            Categoria nueva = categoriaRepo.save(categoria);
-            return ResponseEntity.ok(nueva);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error al crear categoría: " + e.getMessage());
-        }
+    public CategoriaController(CategoriaService categoriaService) {
+        this.categoriaService = categoriaService;
     }
 
 
     @GetMapping
     public ResponseEntity<List<Categoria>> listar() {
-        List<Categoria> categorias = categoriaRepo.findAll();
+
+        List<Categoria> categorias = categoriaService.listarTodas();
+
         if (categorias.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(categorias);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Categoria> obtenerPorId(@PathVariable Long id) {
-        return categoriaRepo.findById(id)
+    public ResponseEntity<Categoria> obtenerPorId(
+            @PathVariable Long id) {
+
+        return categoriaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody Categoria nuevo) {
-        return categoriaRepo.findById(id).map(cat -> {
-            if (nuevo.getNombre() != null && !nuevo.getNombre().trim().isEmpty()) {
-                cat.setNombre(nuevo.getNombre());
-            }
-            Categoria actualizada = categoriaRepo.save(cat);
-            return ResponseEntity.ok(actualizada);
-        }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        if (categoriaRepo.existsById(id)) {
-            categoriaRepo.deleteById(id);
-            return ResponseEntity.ok("Categoría eliminada exitosamente");
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-
     @GetMapping("/buscar")
     public ResponseEntity<List<Categoria>> buscarPorNombre(
-            @RequestParam String nombre
-    ) {
-        List<Categoria> resultados = categoriaRepo.findByNombreContainingIgnoreCase(nombre);
+            @RequestParam String nombre) {
+
+        List<Categoria> resultados =
+                categoriaService.buscarPorNombre(nombre);
+
         if (resultados.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(resultados);
     }
+
+
+    @PostMapping
+    public ResponseEntity<Categoria> crear(
+            @Valid @RequestBody Categoria categoria) {
+
+        Categoria nuevaCategoria =
+                categoriaService.crear(categoria);
+
+        return ResponseEntity.ok(nuevaCategoria);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> actualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody Categoria categoria) {
+
+        return categoriaService.actualizar(id, categoria)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminar(
+            @PathVariable Long id) {
+
+        boolean eliminado = categoriaService.eliminar(id);
+
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(
+                "Categoría eliminada exitosamente"
+        );
+    }
+
+
+
 }
