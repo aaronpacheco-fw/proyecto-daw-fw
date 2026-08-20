@@ -3,65 +3,119 @@ package pe.cibertec.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.cibertec.entities.Carrito;
-import pe.cibertec.entities.ItemCarrito;
-import pe.cibertec.entities.Usuario;
-import pe.cibertec.repository.CarritoRepository;
-import pe.cibertec.repository.ItemCarritoRepository;
-import pe.cibertec.repository.UsuarioRepository;
+import pe.cibertec.service.CarritoService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/carritos")
 public class CarritoController {
-    private final UsuarioRepository usuarioRepository;
-    private final CarritoRepository carritoRepository;
-    private final ItemCarritoRepository itemCarritoRepository;
 
-    public CarritoController(UsuarioRepository usuarioRepository, CarritoRepository carritoRepository, ItemCarritoRepository itemCarritoRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.carritoRepository = carritoRepository;
-        this.itemCarritoRepository = itemCarritoRepository;
+    private final CarritoService carritoService;
+
+    public CarritoController(CarritoService carritoService) {
+        this.carritoService = carritoService;
     }
 
-    @PostMapping("{idUsuario}/crear")
-    public ResponseEntity<?> crear(@PathVariable Long idUsuario, @RequestBody Carrito carrito){
-        Usuario usuario = usuarioRepository.findById(idUsuario).orElse(null);
-        if(usuario == null){
-            return ResponseEntity.badRequest().body("Usuario no encontrado");
+    // POST - Crear carrito para un usuario
+    @PostMapping("/{idUsuario}/crear")
+    public ResponseEntity<?> crear(
+            @PathVariable Long idUsuario) {
+
+        try {
+
+            Carrito carrito =
+                    carritoService.crearCarrito(idUsuario);
+
+            return ResponseEntity.ok(carrito);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
-        carrito.setUsuario(usuario);
-        return ResponseEntity.ok(carritoRepository.save(carrito));
     }
 
-    @PostMapping("{idCarrito}/agregar-item")
-    public ResponseEntity<?> agregarItem(@PathVariable Long idCarrito, @RequestBody ItemCarrito itemCarrito){
-        Carrito carrito = carritoRepository.findById(idCarrito).orElse(null);
-        if(carrito == null){
+    // GET - Obtener carrito por ID
+    @GetMapping("/{idCarrito}")
+    public ResponseEntity<Carrito> obtener(
+            @PathVariable Long idCarrito) {
+
+        Carrito carrito =
+                carritoService.obtenerCarrito(idCarrito);
+
+        if (carrito == null) {
             return ResponseEntity.notFound().build();
         }
-        itemCarrito.setCarrito(carrito);
-        return ResponseEntity.ok(itemCarritoRepository.save(itemCarrito));
+
+        return ResponseEntity.ok(carrito);
     }
 
+    // GET - Obtener carritos de un usuario
     @GetMapping("/usuario/{idUsuario}")
-    public List<Carrito> historial(@PathVariable Long idUsuario){
-        return carritoRepository.findByUsuarioIdUsuario(idUsuario);
-    }
+    public ResponseEntity<?> listarPorUsuario(
+            @PathVariable Long idUsuario) {
 
-    @GetMapping("/{idCarrito}")
-    public ResponseEntity<Carrito> obtener(@PathVariable Long idCarrito){
-        return carritoRepository.findById(idCarrito)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
+        try {
 
-    @DeleteMapping("/{idCarrito}")
-    public ResponseEntity<?> eliminar(@PathVariable Long idCarrito){
-        if(carritoRepository.existsById(idCarrito)){
-            carritoRepository.deleteById(idCarrito);
-            return ResponseEntity.ok("Carrito eliminado satisfactoriamente.");
+            List<Carrito> carritos =
+                    carritoService.obtenerCarritosPorUsuario(
+                            idUsuario
+                    );
+
+            if (carritos.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(carritos);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
+    }
+
+    // PUT - Cambiar estado del carrito
+    @PutMapping("/{idCarrito}/estado")
+    public ResponseEntity<?> cambiarEstado(
+            @PathVariable Long idCarrito,
+            @RequestParam String estado) {
+
+        try {
+
+            Carrito carrito =
+                    carritoService.cambiarEstado(
+                            idCarrito,
+                            estado.toUpperCase()
+                    );
+
+            return ResponseEntity.ok(carrito);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    // DELETE - Eliminar carrito
+    @DeleteMapping("/{idCarrito}")
+    public ResponseEntity<String> eliminar(
+            @PathVariable Long idCarrito) {
+
+        boolean eliminado =
+                carritoService.eliminarCarrito(idCarrito);
+
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(
+                "Carrito eliminado satisfactoriamente."
+        );
     }
 }
