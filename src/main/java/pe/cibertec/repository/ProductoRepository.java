@@ -6,6 +6,9 @@ import pe.cibertec.entities.Producto;
 import java.util.List;
 
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
-    List<Producto> findByNombre(String nombre);
     List<Producto> findByNombreContainingIgnoreCase(String nombre);
+
+    List<Producto> findByCategoriaId(Long categoriaId);
+
+    List<Producto> findByEstado(String estado);
 }
