@@ -1,0 +1,86 @@
+<h1>Gestión de compras</h1>
+
+<div *ngIf="exito" class="mensaje-exito">{{ exito }}</div>
+<div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+<div *ngIf="cargando" class="cargando">Cargando compras...</div>
+
+<div class="tabla-wrapper" *ngIf="!cargando && compras.length > 0">
+  <table class="tabla">
+    <thead>
+    <tr>
+      <th>Id compra</th>
+      <th>Cliente</th>
+      <th>Fecha creación</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let c of compras">
+        <tr>
+          <td>{{ c.id }}</td>
+          <td>{{ c.usuario?.nombre }}</td>
+          <td>{{ c.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td>
+            <span
+              class="badge"
+              [class.badge-ok]="c.estado === 'FINALIZADO'"
+              [class.badge-warn]="c.estado === 'ACTIVO'"
+              [class.badge-danger]="c.estado === 'ABANDONADO'"
+            >{{ c.estado }}</span>
+          </td>
+          <td class="acciones">
+            <button class="btn btn-outline btn-sm" (click)="verDetalle(c)">
+              {{ compraExpandidaId === c.id ? 'Ocultar' : 'Ver detalle' }}
+            </button>
+            <select
+              class="select-estado"
+              [ngModel]="c.estado"
+              (ngModelChange)="cambiarEstado(c, $event)"
+            >
+              <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+            </select>
+            <button class="btn btn-danger btn-sm" (click)="eliminar(c)">Eliminar</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="compraExpandidaId === c.id" class="fila-detalle">
+          <td colspan="5">
+            <div *ngIf="cargandoItems" class="cargando">Cargando productos de la compra...</div>
+
+            <div *ngIf="!cargandoItems && itemsDeCompra.length > 0">
+              <table class="tabla tabla-detalle">
+                <thead>
+                <tr>
+                  <th>Producto</th>
+                  <th>Precio unitario</th>
+                  <th>Cantidad</th>
+                  <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let item of itemsDeCompra">
+                  <td>{{ item.nombreProducto }}</td>
+                  <td>{{ item.precioUnitario | currency: 'PEN' }}</td>
+                  <td>{{ item.cantidad }}</td>
+                  <td>{{ item.precioUnitario * item.cantidad | currency: 'PEN' }}</td>
+                </tr>
+                </tbody>
+              </table>
+              <p class="total-detalle">Total: {{ totalCompra | currency: 'PEN' }}</p>
+            </div>
+
+            <p *ngIf="!cargandoItems && itemsDeCompra.length === 0" class="vacio">
+              Esta compra no tiene productos.
+            </p>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!cargando && compras.length === 0" class="vacio">
+  No hay compras registradas todavía.
+</div>

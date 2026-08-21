@@ -1,0 +1,20 @@
+<header class="topbar">
+  <div class="marca">FOUR<span>WAYS</span></div>
+
+  <nav class="nav-links">
+    <a routerLink="/admin/panel" routerLinkActive="activo">Panel principal</a>
+    <a routerLink="/admin/trabajadores" routerLinkActive="activo">Trabajadores</a>
+    <a routerLink="/admin/productos" routerLinkActive="activo">Productos</a>
+    <a routerLink="/admin/almacen" routerLinkActive="activo">Almacén</a>
+    <a routerLink="/admin/compras" routerLinkActive="activo">Compras</a>
+  </nav>
+
+  <div class="usuario-sesion">
+    <span *ngIf="authService.getUsuario() as u">{{ u.nombre }} · {{ u.rol }}</span>
+    <button class="btn btn-outline btn-sm" (click)="salir()">Salir</button>
+  </div>
+</header>
+
+<main class="contenido">
+  <router-outlet></router-outlet>
+</main>

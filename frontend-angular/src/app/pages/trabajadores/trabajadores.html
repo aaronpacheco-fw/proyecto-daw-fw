@@ -1,0 +1,74 @@
+<div class="encabezado">
+  <h1>Gestión de trabajadores</h1>
+  <button class="btn btn-primary" (click)="nuevoTrabajador()">+ Nuevo trabajador</button>
+</div>
+
+<div *ngIf="exito" class="mensaje-exito">{{ exito }}</div>
+<div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+<div class="card formulario" *ngIf="mostrarFormulario">
+  <h3>{{ editando ? 'Editar trabajador' : 'Nuevo trabajador' }}</h3>
+
+  <form (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" [(ngModel)]="form.username" name="username">
+      </div>
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" [(ngModel)]="form.nombre" name="nombre">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Clave {{ editando ? '(dejar vacío para no cambiar)' : '' }}</label>
+        <input type="password" [(ngModel)]="form.password" name="password">
+      </div>
+      <div class="form-group">
+        <label>Rol</label>
+        <select [(ngModel)]="form.rol" name="rol">
+          <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="acciones-formulario">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="cargando" class="cargando">Cargando trabajadores...</div>
+
+<div class="tabla-wrapper" *ngIf="!cargando && trabajadores.length > 0">
+  <table class="tabla">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Usuario</th>
+      <th>Nombre</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let t of trabajadores">
+      <td>{{ t.idUsuario }}</td>
+      <td>{{ t.username }}</td>
+      <td>{{ t.nombre }}</td>
+      <td><span class="badge badge-neutral">{{ t.rol }}</span></td>
+      <td class="acciones">
+        <button class="btn btn-outline btn-sm" (click)="editar(t)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="eliminar(t)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!cargando && trabajadores.length === 0" class="vacio">
+  No hay trabajadores registrados.
+</div>

@@ -1,0 +1,54 @@
+<h1>Panel principal</h1>
+
+<div *ngIf="cargando" class="cargando">Cargando panel...</div>
+<div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+<ng-container *ngIf="!cargando && !error">
+  <div class="tarjetas">
+    <a routerLink="/admin/productos" class="card tarjeta">
+      <span class="tarjeta-numero">{{ totalProductos }}</span>
+      <span class="tarjeta-label">Productos registrados</span>
+    </a>
+    <a routerLink="/admin/trabajadores" class="card tarjeta">
+      <span class="tarjeta-numero">{{ totalTrabajadores }}</span>
+      <span class="tarjeta-label">Trabajadores</span>
+    </a>
+    <a routerLink="/admin/compras" class="card tarjeta">
+      <span class="tarjeta-numero">{{ comprasActivas }}</span>
+      <span class="tarjeta-label">Compras activas</span>
+    </a>
+    <a routerLink="/admin/almacen" class="card tarjeta">
+      <span class="tarjeta-numero">{{ productosStockBajo.length }}</span>
+      <span class="tarjeta-label">Productos con stock bajo</span>
+    </a>
+  </div>
+
+  <div class="card seccion-stock">
+    <h3>Stock bajo (menos de 10 unidades)</h3>
+
+    <div class="tabla-wrapper" *ngIf="productosStockBajo.length > 0; else sinStockBajo">
+      <table class="tabla">
+        <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Marca</th>
+          <th>Talla</th>
+          <th>Stock</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let p of productosStockBajo">
+          <td>{{ p.nombre }}</td>
+          <td>{{ p.marca }}</td>
+          <td>{{ p.talla }}</td>
+          <td><span class="badge badge-danger">{{ p.stock }}</span></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-template #sinStockBajo>
+      <p class="vacio">No hay productos con stock bajo por el momento.</p>
+    </ng-template>
+  </div>
+</ng-container>

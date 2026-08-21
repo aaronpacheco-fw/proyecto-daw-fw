@@ -1,0 +1,73 @@
+<h1>Gestión de almacén</h1>
+
+<div *ngIf="exito" class="mensaje-exito">{{ exito }}</div>
+<div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+<div class="filtros">
+  <button
+    class="btn btn-sm"
+    [class.btn-primary]="filtro === 'TODOS'"
+    [class.btn-outline]="filtro !== 'TODOS'"
+    (click)="cambiarFiltro('TODOS')"
+  >Todos</button>
+  <button
+    class="btn btn-sm"
+    [class.btn-primary]="filtro === 'BAJO'"
+    [class.btn-outline]="filtro !== 'BAJO'"
+    (click)="cambiarFiltro('BAJO')"
+  >Stock bajo (&lt; {{ stockBajoLimite }})</button>
+</div>
+
+<div *ngIf="cargando" class="cargando">Cargando inventario...</div>
+
+<div class="tabla-wrapper" *ngIf="!cargando && productosFiltrados.length > 0">
+  <table class="tabla">
+    <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Marca</th>
+      <th>Categoría</th>
+      <th>Talla</th>
+      <th>Stock</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of productosFiltrados">
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.marca }}</td>
+      <td>{{ p.categoria?.nombre }}</td>
+      <td>{{ p.talla }}</td>
+      <td>
+        <ng-container *ngIf="edicionId !== p.id">
+          <span class="badge" [class.badge-danger]="p.stock < stockBajoLimite" [class.badge-ok]="p.stock >= stockBajoLimite">
+            {{ p.stock }}
+          </span>
+        </ng-container>
+        <input
+          *ngIf="edicionId === p.id"
+          type="number"
+          min="0"
+          class="input-stock"
+          [(ngModel)]="nuevoStock"
+        >
+      </td>
+      <td><span class="badge badge-neutral">{{ p.estado }}</span></td>
+      <td class="acciones">
+        <ng-container *ngIf="edicionId !== p.id; else edicionAcciones">
+          <button class="btn btn-outline btn-sm" (click)="editarStock(p)">Actualizar stock</button>
+        </ng-container>
+        <ng-template #edicionAcciones>
+          <button class="btn btn-primary btn-sm" (click)="guardarStock(p)">Guardar</button>
+          <button class="btn btn-outline btn-sm" (click)="cancelarEdicion()">Cancelar</button>
+        </ng-template>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!cargando && productosFiltrados.length === 0" class="vacio">
+  No hay productos para mostrar en este filtro.
+</div>

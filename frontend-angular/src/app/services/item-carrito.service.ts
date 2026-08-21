@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ItemCarrito, ItemCarritoRequest } from '../../../../../../Downloads/models-services-angular/src/app/models/item-carrito.model';
+import { ItemCarrito, ItemCarritoRequest } from '../models/item-carrito.model';
 
 @Injectable({ providedIn: 'root' })
 export class ItemCarritoService {

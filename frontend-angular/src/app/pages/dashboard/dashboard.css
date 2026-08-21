@@ -1,0 +1,35 @@
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tarjeta {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: transform 0.15s ease;
+}
+
+.tarjeta:hover {
+  transform: translateY(-2px);
+}
+
+.tarjeta-numero {
+  font-size: 2.2rem;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.tarjeta-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #767c8c;
+}
+
+.seccion-stock h3 {
+  margin-bottom: 1rem;
+}

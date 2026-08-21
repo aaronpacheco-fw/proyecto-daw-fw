@@ -1,1 +1,153 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales del panel administrativo Four Ways */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  background-color: #eef1f5;
+  color: #1f2430;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  margin: 0 0 1.25rem 0;
+}
+
+a { color: inherit; }
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1.1rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-primary { background-color: #14161f; color: #fff; }
+.btn-primary:hover { background-color: #2a2e3d; }
+
+.btn-outline { background-color: #fff; color: #14161f; border-color: #14161f; }
+.btn-outline:hover { background-color: #f0f0f0; }
+
+.btn-danger { background-color: #b3261e; color: #fff; }
+.btn-danger:hover { background-color: #8f1e18; }
+
+.btn-sm { padding: 0.3rem 0.7rem; font-size: 0.75rem; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Formularios ---------- */
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #4b5163;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.form-row .form-group { flex: 1; min-width: 180px; }
+
+/* ---------- Tablas ---------- */
+.tabla-wrapper {
+  background: #fff;
+  border-radius: 6px;
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+table.tabla { width: 100%; border-collapse: collapse; }
+
+table.tabla thead th {
+  text-align: left;
+  padding: 0.9rem 1rem;
+  background: #f7f8fa;
+  border-bottom: 2px solid #e2e4ea;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #3a3f52;
+}
+
+table.tabla tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.92rem;
+  vertical-align: middle;
+}
+
+table.tabla tbody tr:hover { background: #fafbfd; }
+
+.acciones { display: flex; gap: 0.5rem; }
+
+/* ---------- Tarjetas / badges ---------- */
+.card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 1.25rem 1.4rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.badge-ok { background: #e3f6e9; color: #1d7a3d; }
+.badge-warn { background: #fff2d9; color: #a56405; }
+.badge-danger { background: #fde3e1; color: #b3261e; }
+.badge-neutral { background: #eaeaf0; color: #4b5163; }
+
+.mensaje-error {
+  background: #fde3e1;
+  color: #8f1e18;
+  padding: 0.6rem 0.9rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.mensaje-exito {
+  background: #e3f6e9;
+  color: #1d7a3d;
+  padding: 0.6rem 0.9rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.cargando, .vacio {
+  padding: 2rem;
+  text-align: center;
+  color: #767c8c;
+}

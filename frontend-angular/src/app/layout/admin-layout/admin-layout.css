@@ -1,0 +1,59 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 0.9rem 2rem;
+  background: #fff;
+  border-bottom: 1px solid #e2e4ea;
+}
+
+.marca {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.15em;
+  font-weight: 600;
+}
+
+.marca span {
+  font-weight: 300;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.6rem;
+  flex: 1;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #4b5163;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover {
+  color: #14161f;
+}
+
+.nav-links a.activo {
+  color: #14161f;
+  border-bottom-color: #14161f;
+  font-weight: 600;
+}
+
+.usuario-sesion {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #4b5163;
+}
+
+.contenido {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}

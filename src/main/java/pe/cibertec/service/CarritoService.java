@@ -45,6 +45,11 @@ public class CarritoService {
     }
 
 
+    public List<Carrito> listarTodos() {
+        return carritoRepository.findAll();
+    }
+
+
     public Carrito obtenerCarrito(Long id) {
 
         return carritoRepository

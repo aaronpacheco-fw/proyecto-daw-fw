@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Carrito, EstadoCarrito } from '../../../../../../Downloads/models-services-angular/src/app/models/carrito.model';
+import { Carrito, EstadoCarrito } from '../models/carrito.model';
 
 @Injectable({ providedIn: 'root' })
 export class CarritoService {
   private baseUrl = 'http://localhost:8080/api/carritos';
 
   constructor(private http: HttpClient) {}
+
+  listar(): Observable<Carrito[]> {
+    return this.http.get<Carrito[]>(this.baseUrl);
+  }
 
   crear(idUsuario: number): Observable<Carrito> {
     return this.http.post<Carrito>(`${this.baseUrl}/${idUsuario}/crear`, {});

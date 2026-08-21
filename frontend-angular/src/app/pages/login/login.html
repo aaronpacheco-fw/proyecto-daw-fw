@@ -1,0 +1,22 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="marca">FOUR<span>WAYS</span></div>
+    <p class="subtitulo">Panel administrativo</p>
+
+    <div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+    <form (ngSubmit)="login()">
+      <div class="form-group">
+        <label>Usuario</label>
+        <input type="text" placeholder="Usuario" [(ngModel)]="username" name="username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>Clave</label>
+        <input type="password" placeholder="Clave" [(ngModel)]="password" name="password" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="cargando">
+        {{ cargando ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+  </div>
+</div>

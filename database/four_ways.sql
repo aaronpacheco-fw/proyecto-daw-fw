@@ -1,5 +1,4 @@
--- Base de datos inicial del proyecto Four Ways (tienda de ropa).
--- Ejecútalo completo en MySQL Workbench antes de iniciar el backend.
+
 
 CREATE DATABASE IF NOT EXISTS four_ways
     CHARACTER SET utf8mb4

@@ -1,0 +1,108 @@
+<div class="encabezado">
+  <h1>Gestión de productos</h1>
+  <button class="btn btn-primary" (click)="nuevoProducto()">+ Nuevo producto</button>
+</div>
+
+<div *ngIf="exito" class="mensaje-exito">{{ exito }}</div>
+<div *ngIf="error" class="mensaje-error">{{ error }}</div>
+
+<div class="card formulario" *ngIf="mostrarFormulario">
+  <h3>{{ editando ? 'Editar producto' : 'Nuevo producto' }}</h3>
+
+  <form (ngSubmit)="guardar()">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="form.nombre" name="nombre">
+      </div>
+      <div class="form-group">
+        <label>Marca</label>
+        <input type="text" [(ngModel)]="form.marca" name="marca">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Categoría</label>
+        <select [(ngModel)]="form.categoriaId" name="categoriaId">
+          <option *ngFor="let c of categorias" [value]="c.id">{{ c.nombre }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Talla</label>
+        <input type="text" [(ngModel)]="form.talla" name="talla">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Precio (S/)</label>
+        <input type="number" step="0.01" min="0" [(ngModel)]="form.precio" name="precio">
+      </div>
+      <div class="form-group">
+        <label>Stock</label>
+        <input type="number" min="0" [(ngModel)]="form.stock" name="stock">
+      </div>
+      <div class="form-group">
+        <label>Estado</label>
+        <select [(ngModel)]="form.estado" name="estado">
+          <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="acciones-formulario">
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <button type="button" class="btn btn-outline" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>
+
+<div class="barra-busqueda">
+  <input
+    type="text"
+    placeholder="Buscar producto por nombre..."
+    [(ngModel)]="textoBusqueda"
+    (ngModelChange)="aplicarFiltro()"
+  >
+</div>
+
+<div *ngIf="cargando" class="cargando">Cargando productos...</div>
+
+<div class="tabla-wrapper" *ngIf="!cargando && productosFiltrados.length > 0">
+  <table class="tabla">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Nombre</th>
+      <th>Marca</th>
+      <th>Categoría</th>
+      <th>Talla</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of productosFiltrados">
+      <td>{{ p.id }}</td>
+      <td>{{ p.nombre }}</td>
+      <td>{{ p.marca }}</td>
+      <td>{{ p.categoria?.nombre }}</td>
+      <td>{{ p.talla }}</td>
+      <td>{{ p.precio | currency: 'PEN' }}</td>
+      <td>{{ p.stock }}</td>
+      <td><span class="badge badge-neutral">{{ p.estado }}</span></td>
+      <td class="acciones">
+        <button class="btn btn-outline btn-sm" (click)="editar(p)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="eliminar(p)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!cargando && productosFiltrados.length === 0" class="vacio">
+  No hay productos para mostrar.
+</div>

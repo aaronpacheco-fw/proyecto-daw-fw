@@ -17,6 +17,19 @@ public class CarritoController {
         this.carritoService = carritoService;
     }
 
+    // GET - Listar todas las compras (carritos) para el panel de administración
+    @GetMapping
+    public ResponseEntity<List<Carrito>> listarTodos() {
+
+        List<Carrito> carritos = carritoService.listarTodos();
+
+        if (carritos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(carritos);
+    }
+
     // POST - Crear carrito para un usuario
     @PostMapping("/{idUsuario}/crear")
     public ResponseEntity<?> crear(
