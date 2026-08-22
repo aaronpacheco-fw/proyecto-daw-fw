@@ -33,6 +33,9 @@ public class Producto {
     @Column(nullable = false, length = 20)
     private String estado = "DISPONIBLE";
 
+    @Column(nullable = false, length = 255)
+    private String imagen = "";
+
     @Version
     private Integer version;
 }

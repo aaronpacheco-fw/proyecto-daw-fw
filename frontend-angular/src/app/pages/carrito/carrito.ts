@@ -35,7 +35,12 @@ export class Carrito implements OnInit {
   }
 
   actualizarCantidad(item: any): void {
-    // Lógica opcional para actualizar cantidad
+    this.carritoService.actualizarCantidadLocal(
+      item.id,
+      Number(item.cantidad),
+      Number(item.producto.stock),
+    );
+    this.cargarCarrito();
   }
 
   eliminarItem(id: number): void {

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { Carrito, EstadoCarrito } from '../models/carrito.model';
 import { Producto } from '../models/producto.model';
 
+type ProductoEnCarrito = Producto & { cantidad: number };
+
 @Injectable({ providedIn: 'root' })
 export class CarritoService {
   private baseUrl = 'http://localhost:8080/api/carritos';
@@ -11,19 +13,39 @@ export class CarritoService {
   constructor(private http: HttpClient) {}
 
 
-  obtenerProductosLocal(): Producto[] {
+  obtenerProductosLocal(): ProductoEnCarrito[] {
     const guardado = localStorage.getItem('productos_carrito');
-    return guardado ? JSON.parse(guardado) : [];
+    return guardado ? (JSON.parse(guardado) as ProductoEnCarrito[]) : [];
   }
 
 
   agregarProductoLocal(producto: Producto): void {
     const carritoActual = this.obtenerProductosLocal();
-    carritoActual.push(producto);
+    const indice = carritoActual.findIndex((item: any) => item.id === producto.id);
+
+    if (indice >= 0) {
+      const cantidadActual = carritoActual[indice].cantidad || 1;
+      const nuevaCantidad = cantidadActual + 1;
+      const stockMaximo = carritoActual[indice].stock ?? producto.stock;
+
+      if (stockMaximo > 0 && nuevaCantidad <= stockMaximo) {
+        carritoActual[indice].cantidad = nuevaCantidad;
+      }
+    } else {
+      carritoActual.push({ ...producto, cantidad: 1 });
+    }
+
     localStorage.setItem('productos_carrito', JSON.stringify(carritoActual));
-    console.log('Productos actualizados en el carrito:', carritoActual);
   }
 
+  actualizarCantidadLocal(index: number, cantidad: number, stockMaximo: number): void {
+    const carritoActual = this.obtenerProductosLocal();
+    if (!carritoActual[index]) return;
+
+    const cantidadSegura = Math.max(1, Math.min(Math.trunc(cantidad), stockMaximo));
+    carritoActual[index].cantidad = cantidadSegura;
+    localStorage.setItem('productos_carrito', JSON.stringify(carritoActual));
+  }
 
   eliminarProductoLocal(index: number): void {
     const carritoActual = this.obtenerProductosLocal();
@@ -31,14 +53,16 @@ export class CarritoService {
     localStorage.setItem('productos_carrito', JSON.stringify(carritoActual));
   }
 
-
   limpiarCarritoLocal(): void {
     localStorage.removeItem('productos_carrito');
   }
 
   calcularTotalLocal(): number {
     const carritoActual = this.obtenerProductosLocal();
-    return carritoActual.reduce((total, p) => total + p.precio, 0);
+    return carritoActual.reduce(
+      (total, p: any) => total + p.precio * (p.cantidad || 1),
+      0,
+    );
   }
 
 

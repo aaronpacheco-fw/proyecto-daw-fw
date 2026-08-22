@@ -26,7 +26,7 @@ public class CategoriaController {
         List<Categoria> categorias = categoriaService.listarTodas();
 
         if (categorias.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(categorias);
         }
 
         return ResponseEntity.ok(categorias);
@@ -51,7 +51,7 @@ public class CategoriaController {
                 categoriaService.buscarPorNombre(nombre);
 
         if (resultados.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(resultados);
         }
 
         return ResponseEntity.ok(resultados);

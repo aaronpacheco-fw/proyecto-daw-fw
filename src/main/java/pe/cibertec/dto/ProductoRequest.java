@@ -36,4 +36,7 @@ public class ProductoRequest {
     @Size(max = 20, message = "El estado no puede superar los 20 caracteres")
     private String estado;
 
+    @Size(max = 255, message = "La imagen no puede superar los 255 caracteres")
+    private String imagen;
+
 }

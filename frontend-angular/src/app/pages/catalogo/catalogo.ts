@@ -50,8 +50,9 @@ export class Catalogo implements OnInit {
     this.cargando = true;
     this.productoService.listar().subscribe({
       next: (data) => {
-        console.log('MIRA LO QUE LLEGA DEL BACKEND:', data);
-        this.productos = data.filter((p) => p.estado === 'DISPONIBLE' && p.stock > 0);
+        this.error = '';
+        const lista = data ?? [];
+        this.productos = lista.filter((p) => p.estado === 'DISPONIBLE' && p.stock > 0);
         this.aplicarFiltros();
         this.cargando = false;
       },
@@ -105,8 +106,10 @@ export class Catalogo implements OnInit {
   cargarCategorias(): void {
     this.categoriaService.listar().subscribe({
       next: (data) => {
-        if (data && data.length > 0) {
-          this.categorias = data;
+        const lista = data ?? [];
+        if (lista.length > 0) {
+          this.categorias = lista;
+          this.error = '';
         } else {
           this.getCategoriasRespaldo();
         }

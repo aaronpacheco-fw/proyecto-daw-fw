@@ -57,7 +57,7 @@ public class ItemCarritoController {
                             .listarPorCarrito(idCarrito);
 
             if (items.isEmpty()) {
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.ok(items);
             }
 
             return ResponseEntity.ok(items);

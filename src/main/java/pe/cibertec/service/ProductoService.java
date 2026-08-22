@@ -80,6 +80,10 @@ public class ProductoService {
             producto.setEstado(request.getEstado());
         }
 
+        producto.setImagen(request.getImagen() == null
+                ? ""
+                : request.getImagen().trim());
+
         return productoRepository.save(producto);
     }
 
@@ -113,6 +117,10 @@ public class ProductoService {
                 !request.getEstado().trim().isEmpty()) {
 
             producto.setEstado(request.getEstado());
+        }
+
+        if (request.getImagen() != null) {
+            producto.setImagen(request.getImagen().trim());
         }
 
         return productoRepository.save(producto);

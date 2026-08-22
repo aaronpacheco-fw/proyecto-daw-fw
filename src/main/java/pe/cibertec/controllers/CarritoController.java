@@ -24,7 +24,7 @@ public class CarritoController {
         List<Carrito> carritos = carritoService.listarTodos();
 
         if (carritos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(carritos);
         }
 
         return ResponseEntity.ok(carritos);
@@ -78,7 +78,7 @@ public class CarritoController {
                     );
 
             if (carritos.isEmpty()) {
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.ok(carritos);
             }
 
             return ResponseEntity.ok(carritos);

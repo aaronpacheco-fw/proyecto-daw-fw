@@ -27,7 +27,7 @@ public class ProductoController {
                 productoService.listarTodos();
 
         if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(productos);
         }
 
         return ResponseEntity.ok(productos);
@@ -57,7 +57,7 @@ public class ProductoController {
                 productoService.buscar(nombre);
 
         if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(productos);
         }
 
         return ResponseEntity.ok(productos);
@@ -72,7 +72,7 @@ public class ProductoController {
                 productoService.listarPorCategoria(categoriaId);
 
         if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(productos);
         }
 
         return ResponseEntity.ok(productos);

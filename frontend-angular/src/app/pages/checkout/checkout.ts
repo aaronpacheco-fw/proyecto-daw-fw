@@ -90,7 +90,7 @@ export class Checkout implements OnInit {
     comprasAnteriores.push(nuevaCompra);
     localStorage.setItem('mis_compras', JSON.stringify(comprasAnteriores));
 
-    localStorage.removeItem('carrito');
+    this.carritoService.limpiarCarritoLocal();
 
     alert(`¡Compra realizada con éxito! 🎉 Comprobante: ${nuevaCompra.numeroFactura}`);
     this.router.navigate(['/mis-compras']);
