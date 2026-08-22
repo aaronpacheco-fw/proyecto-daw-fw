@@ -1,6 +1,6 @@
 import { Categoria } from './categoria.model';
 
-// Forma en la que el backend devuelve un producto (GET)
+
 export interface Producto {
   id?: number;
   nombre: string;
@@ -10,9 +10,10 @@ export interface Producto {
   stock: number;
   talla: string;
   estado: string;
+  imagen?: string;
 }
 
-// Body que espera el backend en POST /api/productos y PUT /api/productos/{id}
+
 export interface ProductoRequest {
   nombre: string;
   marca: string;
@@ -21,4 +22,5 @@ export interface ProductoRequest {
   stock: number;
   talla: string;
   estado: string;
+  imagen?: string;
 }

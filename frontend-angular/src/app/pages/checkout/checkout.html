@@ -1,0 +1,131 @@
+<div class="checkout-container">
+  <h1 class="checkout-titulo">Finalizar Compra</h1>
+
+  <div class="checkout-layout">
+
+    <form [formGroup]="checkoutForm" (ngSubmit)="finalizarCompra()" class="form-seccion">
+
+      <h2>1. Dirección de Envío a Perú</h2>
+
+      <div class="fila-doble">
+        <div class="input-grupo">
+          <label>Nombre completo *</label>
+          <input type="text" formControlName="nombre" placeholder="Ej: Marilyn">
+        </div>
+        <div class="input-grupo">
+          <label>Apellido completo *</label>
+          <input type="text" formControlName="apellido" placeholder="Ej: Ticona Salinas">
+        </div>
+      </div>
+
+      <div class="fila-doble">
+        <div class="input-grupo">
+          <label>Tipo de documento *</label>
+          <select formControlName="tipoDocumento">
+            <option value="DNI">DNI (Boleta)</option>
+            <option value="RUC">RUC (Factura)</option>
+            <option value="CE">Carnet de Extranjería</option>
+          </select>
+        </div>
+        <div class="input-grupo">
+          <label>Número de documento *</label>
+          <input type="text" formControlName="documento" placeholder="Ej: 72819203 o 2060...">
+        </div>
+      </div>
+
+
+      <div class="input-grupo" *ngIf="checkoutForm.get('tipoDocumento')?.value === 'RUC'">
+        <label>Razón Social de la Empresa *</label>
+        <input type="text" formControlName="razonSocial" placeholder="Ej: Four Ways S.A.C.">
+      </div>
+
+      <div class="input-grupo">
+        <label>Dirección completa *</label>
+        <input type="text" formControlName="direccion" placeholder="Ej: Av. Javier Prado 1234">
+      </div>
+
+      <div class="input-grupo">
+        <label>Referencia de entrega</label>
+        <input type="text" formControlName="referencia" placeholder="Ej: Al costado del parque, puerta negra">
+      </div>
+
+      <div class="fila-doble">
+        <div class="input-grupo">
+          <label>Región / Departamento *</label>
+          <input type="text" formControlName="region" placeholder="Ej: Lima">
+        </div>
+        <div class="input-grupo">
+          <label>Provincia *</label>
+          <input type="text" formControlName="provincia" placeholder="Ej: Lima">
+        </div>
+      </div>
+
+      <div class="fila-doble">
+        <div class="input-grupo">
+          <label>Distrito *</label>
+          <input type="text" formControlName="distrito" placeholder="Ej: Miraflores">
+        </div>
+        <div class="input-grupo">
+          <label>Código postal *</label>
+          <input type="text" formControlName="codigoPostal" placeholder="Ej: 15074">
+        </div>
+      </div>
+
+      <h2>2. Datos de Contacto</h2>
+      <div class="fila-doble">
+        <div class="input-grupo">
+          <label>Correo Electrónico *</label>
+          <input type="email" formControlName="email" placeholder="correo@ejemplo.com">
+        </div>
+        <div class="input-grupo">
+          <label>Celular / Teléfono *</label>
+          <input type="text" formControlName="telefono" placeholder="912345678">
+        </div>
+      </div>
+
+      <h2>3. Método de Pago</h2>
+      <div class="input-grupo">
+        <select formControlName="metodoPago" class="select-pago">
+          <option value="Yape / Plin">📱 Yape / Plin (QR Móvil)</option>
+          <option value="Tarjeta de Crédito / Débito">💳 Tarjeta de Crédito / Débito</option>
+          <option value="Pago contra entrega">📦 Pago contra entrega</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-confirmar-pedido">CONFIRMAR Y PAGAR →</button>
+    </form>
+
+
+    <div class="resumen-seccion">
+      <h2>Detalle de la compra</h2>
+      <hr class="resumen-divider">
+
+      <div class="resumen-fila">
+        <span>Producto(s) ({{ items.length }})</span>
+        <span>S/ {{ calcularSubtotal().toFixed(2) }}</span>
+      </div>
+      <div class="resumen-fila">
+        <span>Costo de envío</span>
+        <span>S/ {{ calcularEnvio().toFixed(2) }}</span>
+      </div>
+
+      <hr class="resumen-divider">
+
+      <div class="resumen-fila total-fila">
+        <span>Total a pagar</span>
+        <span>S/ {{ calcularTotal().toFixed(2) }}</span>
+      </div>
+
+      <div class="productos-miniatura-lista">
+        <div class="mini-item" *ngFor="let item of items">
+          <img [src]="item.imagen || 'https://via.placeholder.com/80?text=FourWays'" [alt]="item.nombre">
+          <div class="mini-info">
+            <p class="mini-nombre"><strong>{{ item.nombre }}</strong></p>
+            <p class="mini-cant">Cant: {{ item.cantidad }}</p>
+            <p class="mini-precio">S/ {{ (item.precio * item.cantidad).toFixed(2) }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

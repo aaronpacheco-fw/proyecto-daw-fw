@@ -1,0 +1,74 @@
+<div class="catalogo-container">
+  <div class="header-seccion">
+    <h1 class="titulo-pagina">Catálogo de Productos</h1>
+    <p class="subtitulo">Explora nuestro catálogo exclusivo y agrega tus prendas al carrito.</p>
+
+    <div class="barra-filtros">
+      <div class="caja-busqueda">
+        <input
+          type="text"
+          class="input-busqueda"
+          placeholder="Buscar por producto o marca..."
+          [(ngModel)]="textoBusqueda"
+          (ngModelChange)="aplicarFiltros()"
+        />
+      </div>
+
+      <select
+        class="select-categoria"
+        [(ngModel)]="categoriaSeleccionada"
+        (change)="aplicarFiltros()"
+      >
+        <option [ngValue]="null">Todas las categorías</option>
+        <option *ngFor="let cat of categorias" [value]="cat.id">
+          {{ cat.nombre }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="cargando" class="estado-cargas">
+    <p>Cargando productos...</p>
+  </div>
+
+  <div *ngIf="error" class="alerta-error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!cargando && !error" class="grilla-productos">
+    <div *ngFor="let p of productosFiltrados" class="card-producto">
+
+      <div class="contenedor-imagen">
+        <img
+          [src]="p.imagen ? ('/' + p.imagen) : 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80'"
+          [alt]="p.nombre"
+          class="imagen-producto"
+        />
+        <span class="badge-talla">Talla: {{ p.talla }}</span>
+      </div>
+
+
+      <div class="card-cuerpo">
+        <span class="categoria-tag">{{ p.categoria?.nombre || 'General' }}</span>
+        <h3 class="nombre-producto">{{ p.nombre }}</h3>
+        <p class="marca-producto">Marca: <strong>{{ p.marca }}</strong></p>
+
+        <div class="card-footer-item">
+          <div class="precio-box">
+            <span class="lbl-precio">Precio</span>
+            <span class="monto-precio">S/ {{ p.precio | number:'1.2-2' }}</span>
+          </div>
+
+          <button class="btn-agregar" (click)="agregarAlCarrito(p)">
+            AGREGAR
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="!cargando && !error && productosFiltrados.length === 0" class="sin-resultados">
+    <p>No encontramos productos disponibles con ese filtro.</p>
+  </div>
+</div>

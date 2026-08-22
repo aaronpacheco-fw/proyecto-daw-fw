@@ -1,0 +1,66 @@
+<div class="carrito-container">
+  <h1 class="carrito-titulo">Mi Carrito</h1>
+
+  <div class="carrito-layout" *ngIf="items.length > 0; else carritoVacio">
+    <!-- Lista de productos -->
+    <div class="lista-items">
+      <div class="item-card" *ngFor="let item of items">
+        <div class="item-img-box">
+          <img [src]="item.producto.imagen || 'https://via.placeholder.com/150?text=FourWays'" [alt]="item.producto.nombre" class="item-img">
+        </div>
+
+        <div class="item-detalles">
+          <h3>{{ item.producto.nombre }}</h3>
+          <p class="stock-info">STOCK DISPONIBLE: {{ item.producto.stock }}</p>
+
+          <div class="item-acciones">
+            <span class="etiqueta-cant">CANT.</span>
+            <input type="number" [(ngModel)]="item.cantidad" min="1" [max]="item.producto.stock" class="input-cant">
+            <button class="btn-ok" (click)="actualizarCantidad(item)">OK</button>
+            <button class="btn-quitar" (click)="eliminarItem(item.id)">QUITAR</button>
+          </div>
+        </div>
+
+        <div class="item-precio-col">
+          <p class="precio-unitario">S/ {{ item.producto.precio.toFixed(2) }}</p>
+          <p class="subtotal-item">SUBTOTAL: S/ {{ (item.producto.precio * item.cantidad).toFixed(2) }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de Resumen a la Derecha -->
+    <div class="resumen-card">
+      <h2>Resumen</h2>
+      <hr class="resumen-divider">
+
+      <div class="resumen-fila">
+        <span>Subtotal</span>
+        <span>S/ {{ calcularTotal().toFixed(2) }}</span>
+      </div>
+
+      <div class="resumen-fila envio-fila">
+        <span>Envío</span>
+        <span class="envio-texto">SE CALCULA AL CONFIRMAR</span>
+      </div>
+
+      <hr class="resumen-divider">
+
+      <div class="resumen-fila total-fila">
+        <span>Total</span>
+        <span>S/ {{ calcularTotal().toFixed(2) }}</span>
+      </div>
+
+      <button class="btn-realizar-compra" (click)="realizarCompra()">REALIZAR COMPRA &rarr;</button>
+
+      <p class="impuestos-texto">IMPUESTOS CALCULADOS EN LA COMPRA</p>
+    </div>
+  </div>
+
+  <!-- Plantilla por si el carrito está vacío -->
+  <ng-template #carritoVacio>
+    <div class="vacio-box">
+      <p>Tu carrito está vacío.</p>
+      <a routerLink="/catalogo" class="btn-ir-catalogo">VER CATÁLOGO</a>
+    </div>
+  </ng-template>
+</div>

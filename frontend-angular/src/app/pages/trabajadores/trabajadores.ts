@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../../services/usuario.service';
 import { Usuario } from '../../models/usuario.model';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trabajadores',
@@ -31,13 +33,16 @@ export class Trabajadores implements OnInit {
 
   cargar(): void {
     this.cargando = true;
-    this.usuarioService.listar().subscribe({
-      next: (data) => {
-        this.trabajadores = data;
+    this.usuarioService.listar().pipe(catchError(() => of([]))).subscribe({
+      next: (data: any) => {
+
+        const locales = JSON.parse(localStorage.getItem('mis_trabajadores') || '[]');
+        this.trabajadores = data.length > 0 ? data : locales;
         this.cargando = false;
       },
       error: () => {
-        this.error = 'No se pudo cargar la lista de trabajadores.';
+
+        this.trabajadores = JSON.parse(localStorage.getItem('mis_trabajadores') || '[]');
         this.cargando = false;
       },
     });

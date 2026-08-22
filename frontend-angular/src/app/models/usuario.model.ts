@@ -6,7 +6,7 @@ export interface Usuario {
   rol: string;
 }
 
-// Body para POST /api/auth/login
+
 export interface LoginRequest {
   username: string;
   password: string;

@@ -1,0 +1,20 @@
+<header class="topbar">
+  <div class="marca">FOUR<span>WAYS</span></div>
+
+  <nav class="nav-links">
+    <!-- Agregamos INICIO aquí para que aparezca primero en el menú -->
+    <a routerLink="/inicio" routerLinkActive="activo">INICIO</a>
+    <a routerLink="/catalogo" routerLinkActive="activo">CATÁLOGO</a>
+    <a routerLink="/carrito" routerLinkActive="activo">CARRITO</a>
+    <a routerLink="/mis-compras" routerLinkActive="activo">MIS COMPRAS</a>
+  </nav>
+
+  <div class="usuario-sesion">
+    <span *ngIf="authService.getUsuario() as u">{{ u.nombre }} · CLIENTE</span>
+    <button class="btn-salir" (click)="salir()">SALIR</button>
+  </div>
+</header>
+
+<main class="contenido">
+  <router-outlet></router-outlet>
+</main>

@@ -21,7 +21,7 @@ export class Login {
   constructor(
     private usuarioService: UsuarioService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   login(): void {
@@ -34,18 +34,22 @@ export class Login {
 
     this.cargando = true;
 
-    this.usuarioService
-      .login({ username: this.username, password: this.password })
-      .subscribe({
-        next: (usuario) => {
-          this.cargando = false;
-          this.authService.guardarSesion(usuario);
+    this.usuarioService.login({ username: this.username, password: this.password }).subscribe({
+      next: (usuario) => {
+        this.cargando = false;
+        this.authService.guardarSesion(usuario);
+
+        // Si es ADMIN va al panel, si es CLIENTE va al catálogo
+        if (usuario.rol === 'ADMIN') {
           this.router.navigate(['/admin/panel']);
-        },
-        error: () => {
-          this.cargando = false;
-          this.error = 'Credenciales inválidas';
-        },
-      });
+        } else {
+          this.router.navigate(['/catalogo']);
+        }
+      },
+      error: () => {
+        this.cargando = false;
+        this.error = 'Credenciales inválidas';
+      },
+    });
   }
 }

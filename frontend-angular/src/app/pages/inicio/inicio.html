@@ -1,0 +1,46 @@
+<div class="inicio-container">
+  <!-- Banner Principal -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <span class="hero-tag">NUEVA COLECCIÓN</span>
+      <h1>ELEGANCIA MODERNA</h1>
+      <p>Prendas diseñadas para acompañarte todos los días, con un estilo que nunca pasa de moda.</p>
+      <div class="hero-buttons">
+        <a routerLink="/catalogo" (click)="irAlCatalogo(); $event.preventDefault()" class="btn-comprar-ahora">COMPRAR AHORA &rarr;</a>
+        <a routerLink="/catalogo" (click)="irAlCatalogo(); $event.preventDefault()" class="btn-ver-coleccion">VER COLECCION</a>
+      </div>
+    </div>
+    <div class="hero-image-container">
+      <img src="assets/img/polo1.png" alt="Elegancia Moderna" class="hero-img">
+    </div>
+  </section>
+
+  <!-- Barra de Beneficios -->
+  <section class="features-bar">
+    <div class="feature-item"> <strong>TENDENCIAS</strong> <p>Lo más popular</p></div>
+    <div class="feature-item"> <strong>ENVÍO RÁPIDO</strong> <p>Despachos en 24-48h</p></div>
+    <div class="feature-item"> <strong>NUEVOS INGRESOS</strong> <p>Piezas exclusivas</p></div>
+    <div class="feature-item">🏷<strong>MEJORES PRECIOS</strong> <p>Calidad garantizada</p></div>
+  </section>
+
+  <!-- Sección de Destacados -->
+  <section class="destacados-section">
+    <div class="section-header">
+      <h2>DESTACADOS</h2>
+      <a routerLink="/catalogo" (click)="irAlCatalogo(); $event.preventDefault()" class="ver-todo-link">VER TODO</a>
+    </div>
+
+    <div class="destacados-grid">
+      <div class="producto-card" *ngFor="let p of productosDestacados">
+        <div class="prod-img-box">
+          <span class="badge-nuevo">NUEVO</span>
+          <img [src]="p.imagen || 'https://via.placeholder.com/300?text=FourWays'" alt="{{ p.nombre }}">
+        </div>
+        <div class="prod-info">
+          <h3>{{ p.nombre }}</h3>
+          <p class="prod-precio">S/ {{ p.precio.toFixed(2) }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

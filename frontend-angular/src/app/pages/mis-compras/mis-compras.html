@@ -1,0 +1,45 @@
+<div class="compras-container">
+  <h1 class="compras-titulo">Mis Compras y Comprobantes</h1>
+
+  <div *ngIf="compras.length > 0; else comprasVacias" class="lista-compras">
+    <div class="compra-card" *ngFor="let compra of compras">
+
+
+      <div class="compra-header">
+        <div class="header-info-izq">
+          <span class="factura-badge"><strong>{{ compra.numeroFactura || ('FAC-' + compra.id) }}</strong></span>
+          <span class="compra-fecha"><strong>Fecha:</strong> {{ compra.fecha }}</span>
+        </div>
+        <div class="header-info-der">
+          <span class="metodo-tag"><strong>Método:</strong> {{ compra.metodoPago || 'Tarjeta / Efectivo' }}</span>
+          <button class="btn-pdf" (click)="descargarBoleta(compra)">🖨️ Descargar / PDF</button>
+        </div>
+      </div>
+
+      <!-- Cuerpo con los productos -->
+      <div class="compra-body">
+        <div class="producto-item" *ngFor="let item of compra.productos">
+          <img [src]="item.imagen || 'https://via.placeholder.com/100?text=FourWays'" [alt]="item.nombre" class="compra-img">
+          <div class="compra-info">
+            <h3>{{ item.nombre }}</h3>
+            <p>Cantidad: {{ item.cantidad }} | Precio unitario: S/ {{ item.precio.toFixed(2) }}</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="compra-footer">
+        <span>Total pagado (incluye envío):</span>
+        <span class="compra-total">S/ {{ compra.total.toFixed(2) }}</span>
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #comprasVacias>
+    <div class="vacio-box">
+      <p>Aún no tienes compras registradas.</p>
+      <a routerLink="/catalogo" class="btn-ir-catalogo">VER CATÁLOGO</a>
+    </div>
+  </ng-template>
+</div>
