@@ -1,7 +1,4 @@
--- =============================================================
--- FOUR WAYS - Base de datos final para MySQL / MariaDB
--- Ejecutar este archivo completo desde MySQL Workbench o phpMyAdmin.
--- =============================================================
+
 
 CREATE DATABASE IF NOT EXISTS four_ways
     CHARACTER SET utf8mb4
@@ -9,8 +6,6 @@ CREATE DATABASE IF NOT EXISTS four_ways
 
 USE four_ways;
 
--- El script recrea las tablas para dejar una instalación limpia.
--- Realiza una copia de seguridad si ya tienes datos importantes.
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS items_carrito;
 DROP TABLE IF EXISTS carritos;
@@ -151,4 +146,4 @@ VALUES
     (4, 4, 'Vestido floral midi', 119.90, 1, 4),
     (5, 5, 'Gorra urbana beige', 59.90, 2, 5);
 
--- Fin del script.
+
